@@ -8,9 +8,14 @@ import { css } from '@emotion/react';
 
 const background = css`
   background-image: url('./Images/archi.jpeg');
-  width: 100vp;
+  background-position: center;
+  width: 100vw;
   height: 85vh;
+  //width: auto;
   box-sizing: border-box;
+  margin-left: 0;
+  border: 1px solid black;
+  object-fit: fill;
 `;
 
 export default function Home() {
