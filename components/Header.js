@@ -1,10 +1,14 @@
 import Link from 'next/link';
+import { css } from '@emotion/react';
 
+const headerStyles = css`
+  background-image: '';
+`;
 export default function Header() {
   return (
     <header>
       <p>
-        <Link href="/home">
+        <Link href="/">
           <a>Home</a>
         </Link>
         <Link href="/about">
