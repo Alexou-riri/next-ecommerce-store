@@ -7,8 +7,10 @@ import KingsLanding from '../public/Images/Kings_Landing.webp';
 import Neuschwanstein from '../public/Images/neuschwanstein.jpeg';
 import Schoenbrunn from '../public/Images/schoenbrunn.jpg';
 import Image from 'next/image';
+import housesDatabase from '../util/database';
+import Link from 'next/link';
 
-export default function Products() {
+export default function Products(props) {
   return (
     <Layout>
       <div>
@@ -23,7 +25,17 @@ export default function Products() {
         </Head>
       </div>
       <h1>Choose wisely</h1>
-      <div>
+      {props.houses.map((house) => {
+        return (
+          <div key={`house-${house.id}`}>
+            <Link href={`/Houses/${house.id}`}>
+              <a>{house.name}</a>
+            </Link>{' '}
+          </div>
+        );
+      })}
+
+      {/* <div>
         <h1>Chambord</h1>
         <Image src={Chambord} />
       </div>
@@ -46,7 +58,16 @@ export default function Products() {
       <div>
         <h1>Neuschwanstein</h1>
         <Image src={Neuschwanstein} />
-      </div>
+      </div> */}
     </Layout>
   );
+}
+
+export function getServerSideProps() {
+  // const housesDatabase = await getHouses();
+  return {
+    props: {
+      houses: housesDatabase,
+    },
+  };
 }
