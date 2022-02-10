@@ -28,7 +28,7 @@ export default function Products(props) {
       {props.houses.map((house) => {
         return (
           <div key={`house-${house.id}`}>
-            <Link href={`/Houses/${house.id}`}>
+            <Link data-test-id="product" href={`/Houses/${house.id}`}>
               <a>{house.name}</a>
             </Link>{' '}
           </div>

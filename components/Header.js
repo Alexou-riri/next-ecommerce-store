@@ -53,7 +53,7 @@ export default function Header() {
         </Link>
         <Link href="/products">
           {/* <select></select> */}
-          <a>Products</a>
+          <a data-test-id="products=link">Products</a>
         </Link>
         {/* menu deroulant? */}
         <Link href="/cart">
