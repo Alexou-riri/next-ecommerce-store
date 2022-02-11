@@ -11,11 +11,12 @@ export default function SingleHouse(props) {
   const currentHouseObject = addedArray.find(
     (cookieObject) => cookieObject.id === props.house.id,
   );
+  const [cartList, setCartList] = useState(props.cart);
 
   function numberCountUp() {
     console.log('add one more');
     // get the current cookie value
-    const cookieValue = JSON.parse(Cookies.get('addedHouse') || '[]');
+    const cookieValue = getParsedCookie('addedHouse') || [];
     // update the value + 1
     const newCookie = cookieValue.map((cookieObject) => {
       if (cookieObject.id === props.house.id) {
@@ -26,7 +27,26 @@ export default function SingleHouse(props) {
     });
     // update cookie and state
     setAddedArray(newCookie);
-    Cookies.set('addedHouse', JSON.stringify(newCookie));
+    setParsedCookie('addedHouse', newCookie);
+  }
+
+  function numberCountDown() {
+    // get the current cookie value
+    const cookieValue = getParsedCookie('addedHouse') || [];
+    // update the value + 1
+    const newCookie = cookieValue.map((cookieObject) => {
+      if (cookieObject.id === props.house.id) {
+        if (cookieObject.number === 1) {
+          return cookieObject;
+        }
+        return { ...cookieObject, numbers: cookieObject.number - 1 };
+      } else {
+        return cookieObject;
+      }
+    });
+    // update cookie and state
+    setAddedArray(newCookie);
+    setParsedCookie('addedHouse', newCookie);
   }
 
   function toggleHouseAdd(id) {
@@ -51,6 +71,7 @@ export default function SingleHouse(props) {
     }
     // 3 set the new value of the cookie
     setAddedArray(newCookie);
+    // setCartList(newCookie);
     setParsedCookie('addedHouse', newCookie);
   }
 
@@ -66,22 +87,28 @@ export default function SingleHouse(props) {
         <title>Products</title>
         <meta description="A list of products" />
       </Head>
+      <button>Back to the products</button>
       <h1>Description</h1>
       <h1>{props.house.name}</h1>
-      <Image
-        src={`/public/Images/${props.house.id}.jpg`}
-        width="300"
-        height="300"
+      <img
+        src={props.house.image}
+        alt="the house"
+        height="700px"
+        width="1200px"
       />
       <div>{props.house.type}</div>
+      <div>Price : ${props.house.price}</div>
       <p>vdsvds</p>
 
       <button onClick={() => numberCountUp()}>
-        Add one more {currentHouseObject ? currentHouseObject.number : 'Blue'}
+        Add one more
+        {currentHouseObject ? currentHouseObject.number : '1'}
+      </button>
+      <button onClick={() => numberCountDown()}>
+        - {currentHouseObject ? currentHouseObject.number : '1'}
       </button>
       <button onClick={() => toggleHouseAdd(props.house.id)}>
-        {houseIsAdded ? 'yes' : 'no not added'}
-        Add on cart
+        {houseIsAdded ? 'yes is added' : 'no not added'}
       </button>
       {/* <div>{props.description}</div> */}
     </Layout>

@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
+import { useState } from 'react';
+import Image from 'next/image';
+// import logoipsum from ' ./public/Images/logoipsum.svg';
 
 const headerStyles = css`
   background: rgba(49, 27, 1, 0.31);
@@ -8,6 +11,7 @@ const headerStyles = css`
   display: flex;
   justify-content: flex-end;
   margin-top: 0;
+  position: static;
 
   a + a {
     margin-left: 20px;
@@ -40,10 +44,20 @@ const headerStyles = css`
     width: 100%;
     left: 0;
   }
+
+  img {
+    /* display: flex;
+    justify-content: flex-start; */
+    margin-right: auto;
+  }
 `;
+
+const { cart } = useState;
+
 export default function Header() {
   return (
     <header css={headerStyles}>
+      <img src="/logoipsum.svg" alt="logo" />
       <p>
         <Link href="/">
           <a>Home</a>
@@ -57,6 +71,7 @@ export default function Header() {
         </Link>
         {/* menu deroulant? */}
         <Link href="/cart">
+          {/* {cart.cartItems.length > 0 ? } */}
           <a>Cart</a>
         </Link>
       </p>

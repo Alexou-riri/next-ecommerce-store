@@ -7,9 +7,11 @@ export default function Layout(props) {
     <div>
       <Head>
         <link rel="icon" href="/favicon.ico" />
+        <title></title>
       </Head>
       <Header />
       <main>{props.children}</main>
+
       <Footer />
     </div>
   );

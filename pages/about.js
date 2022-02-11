@@ -16,6 +16,8 @@ export default function About() {
         </Head>
         <Header />
         <h1>About this eshop</h1>
+        <p>nfodsbaobdosbvods</p>
+        <p>fodbbdosbfdbfosb</p>
       </div>
       <div>
         <Footer />

@@ -9,13 +9,33 @@ import { css } from '@emotion/react';
 const background = css`
   background-image: url('./Images/archi.jpeg');
   background-position: center;
-  width: 100vw;
-  height: 85vh;
-  //width: auto;
+  /* width: 100vw;
+  height: 85vh; */
+  height: 600px;
+  width: 100%;
   box-sizing: border-box;
   margin-left: 0;
   border: 1px solid black;
-  object-fit: fill;
+  object-fit: contain;
+`;
+const meetOurTeam = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+`;
+
+const choose = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 220px;
+  // vertical align?
+  text-shadow: 2px 2px 3px black;
+  font-size: 22px;
+  color: white;
 `;
 
 export default function Home() {
@@ -33,7 +53,7 @@ export default function Home() {
         </Head>
 
         <main css={background}>
-          <div>
+          <div css={choose}>
             <h1>Choose your dream house </h1>
 
             <div>
@@ -48,6 +68,15 @@ export default function Home() {
             </div>
           </div>
         </main>
+        <div css={meetOurTeam}>
+          <h2>Meet our Team</h2>
+          <img
+            src="pexels.jpg"
+            alt="meet our team"
+            height="520px"
+            width="780px"
+          />
+        </div>
       </Layout>
     </div>
   );
