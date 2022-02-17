@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Layout from '../../components/Layout';
-import housesDatabase from '../../util/database';
+import { getHouseById } from '../../util/database';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { getParsedCookie, setParsedCookie } from '../../util/cookies';
@@ -124,24 +124,26 @@ export default function SingleHouse(props) {
   );
 }
 
-export function getServerSideProps(context) {
-  // const cartOnCookies = context.req.cookies.addedHouse || '[]';
-  // const housesInCart = JSON.parse(cartOnCookies);
+export async function getServerSideProps(context) {
+  // info from the url:
   const houseId = context.query.houseId;
-  console.log('db', housesDatabase);
+  // console.log('db', housesDatabase);
 
-  const matchingHouse = housesDatabase.find((house) => {
-    return house.id === houseId;
-  });
+  // const matchingHouse = housesDatabase.find((house) => {
+  //   return house.id === houseId;
+  // });
 
-  const addedHouseOncookies = context.req.cookies.addedHouse || [];
+  const addedHouseOncookies = context.req.cookies.addedHouse || '[]';
   const addedHouse = JSON.parse(addedHouseOncookies);
   // console.log(addedHouseOncookies);
+
+  const house = await getHouseById(houseId);
 
   return {
     props: {
       addedHouse,
-      house: matchingHouse,
+      // house: matchingHouse,
+      house: house,
     },
   };
 }

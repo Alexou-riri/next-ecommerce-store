@@ -58,9 +58,7 @@ export default function checkout() {
           <span> / </span>
           <input type="text" name="exp-year" id="exp-year" size="4" required />
         </div>
-        <button type="submit" id="submit-button">
-          Buy Now
-        </button>
+        <button href="/thank_you">confirm your order and get your keys</button>
       </Layout>
     </div>
   );

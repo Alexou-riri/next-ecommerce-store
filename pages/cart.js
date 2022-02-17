@@ -2,10 +2,11 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import housesDatabase from '../util/database';
+import { getHouses } from '../util/database';
 import { getParsedCookie, setParsedCookie } from '../util/cookies.js';
 
 export default function Cart(props) {
+  const [cartList, setCartList] = useState(props.addedHouse);
   const cookieValue = getParsedCookie('addedHouse') || [];
   const newCookie = cookieValue.map((cookieObject) => {
     function findHouse() {
@@ -26,6 +27,17 @@ export default function Cart(props) {
   const totalPrice = newCookie.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.price * currentValue.items;
   }, 0);
+
+  function removeProductFromCart(id) {
+    const cartValue = getParsedCookie('addedHouse') || [];
+
+    const updatedCookie = cartValue.filter(
+      (cookieObject) => cookieObject.id !== id,
+    );
+
+    setParsedCookie('addedHouse', updatedCookie);
+    setCartList(updatedCookie);
+  }
 
   return (
     <Layout>
@@ -75,13 +87,16 @@ export default function Cart(props) {
     </Layout>
   );
 }
-export function getServerSideProps(context) {
+export async function getServerSideProps(context) {
   const addedHouseOncookies = context.req.cookies.addedHouse || '[]';
   const addedHouse = JSON.parse(addedHouseOncookies);
+
+  const houses = await getHouses();
+
   return {
     props: {
       addedHouse,
-      houses: housesDatabase,
+      houses,
     },
   };
 }

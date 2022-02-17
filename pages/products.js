@@ -2,9 +2,10 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import { useState } from 'react';
 
-import housesDatabase from '../util/database';
+import { getHouses } from '../util/database';
 import Link from 'next/link';
 import { css } from '@emotion/react';
+import { getParsedCookie, setParsedCookie } from '../util/cookies';
 // import { wrap } from 'module';
 
 const grid = css`
@@ -66,6 +67,24 @@ const wrap = css`
 `;
 
 export default function Products(props) {
+  const [cartList, setCartList] = useState(props.addedHouse);
+
+  function toggleHouseCart(id) {
+    const cookieValue = getParsedCookie('addedHouse') || [];
+    const existIdOnArray = cookieValue.some((cookieObject) => {
+      return cookieObject.id === id;
+    });
+
+    let newCookie;
+    if (existIdOnArray) {
+      newCookie = cookieValue.filter((cookieObject) => cookieObject.id !== id);
+    } else {
+      newCookie = [...cookieValue, { id: id, items: 1 }];
+    }
+
+    setCartList(newCookie);
+    setParsedCookie('addedHouse', newCookie);
+  }
   return (
     <Layout>
       <div>
@@ -81,6 +100,9 @@ export default function Products(props) {
       </div>
       <h1>Choose wisely</h1>
       {props.houses.map((house) => {
+        const houseIsAdded = cartList.some((addedObject) => {
+          return addedObject.id === house.id;
+        });
         return (
           <div key={`house-${house.id}`} css={wrap}>
             <Link data-test-id="product" href={`/Houses/${house.id}`}>
@@ -93,6 +115,9 @@ export default function Products(props) {
               width="700px"
               css={grid}
             />
+            {/* <button onClick={() => toggleHouseCart(house.id)}>
+               {houseIsAdded ? 'Remove from cart' : 'Add to cart'}
+             </button> */}
           </div>
         );
       })}
@@ -125,11 +150,17 @@ export default function Products(props) {
   );
 }
 
-export function getServerSideProps() {
-  // const housesDatabase = await getHouses();
+export async function getServerSideProps(context) {
+  const addedHouseOncookies = context.req.cookies.addedHouse || '[]';
+  const addedHouse = JSON.parse(addedHouseOncookies);
+
+  const houses = await getHouses();
+
   return {
     props: {
-      houses: housesDatabase,
+      // houses: housesDatabase,
+      houses: houses,
+      addedHouse,
     },
   };
 }
