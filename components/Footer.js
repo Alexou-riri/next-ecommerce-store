@@ -5,6 +5,10 @@ import { css } from '@emotion/react';
 const footer = css`
   background: rgba(49, 27, 1, 0.31);
   text-align: center;
+  /* position: absolute; */
+  /* right: 0;
+  bottom: 0;
+  left: 0; */
 
   .contact {
     display: flex;

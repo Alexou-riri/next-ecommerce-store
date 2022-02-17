@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { getParsedCookie, setParsedCookie } from '../util/cookies.js';
+import { getProductCart } from '../util/cookies';
 // import logoipsum from ' ./public/Images/logoipsum.svg';
 
 const headerStyles = css`
@@ -52,9 +54,29 @@ const headerStyles = css`
   }
 `;
 
-const { cart } = useState;
+// const { cart } = useState;
 
 export default function Header() {
+  const cookieValue = getParsedCookie('cart') || [];
+  console.log('CookieValue', cookieValue);
+  const totalQuantity = cookieValue.reduce((previousValue, currentValue) => {
+    return previousValue + currentValue.items;
+  }, 0);
+  console.log('totalQuantity', totalQuantity);
+  // const productCart = getProductCart();
+  // const [itemQuantity, setItemQuantity] = useState(null);
+  // useEffect(() => {
+  //   setItemQuantity(productCart.length);
+  // }, [productCart]);
+
+  // const [sumCartItems, setSumCartItems] = useState(0);
+  // const currentCookies = getParsedCookie('cart');
+  // console.log('current cookie', currentCookies);
+  // useEffect(() => {
+  //   if (currentCookies !== undefined) {
+  //   }
+  // });
+
   return (
     <header css={headerStyles}>
       <img src="/logoipsum.svg" alt="logo" />
@@ -72,9 +94,20 @@ export default function Header() {
         {/* menu deroulant? */}
         <Link href="/cart">
           {/* {cart.cartItems.length > 0 ? } */}
-          <a>Cart</a>
+          <a>Cart - {totalQuantity}</a>
         </Link>
       </p>
     </header>
   );
+}
+
+export function getServerSideProps(context) {
+  const cartOnCookies = context.req.cookies.cart || '[]';
+  const cart = JSON.parse(cartOnCookies);
+
+  return {
+    props: {
+      addedHouse: cart,
+    },
+  };
 }

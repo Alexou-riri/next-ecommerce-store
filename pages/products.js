@@ -1,12 +1,7 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
-import Chambord from '../public/Images/chambord.jpg';
-import Chenonceau from '../public/Images/chenonceau.jpg';
-import Disney from '../public/Images/disney.jpg';
-import KingsLanding from '../public/Images/Kings_Landing.webp';
-import Neuschwanstein from '../public/Images/neuschwanstein.jpeg';
-import Schoenbrunn from '../public/Images/schoenbrunn.jpg';
-import Image from 'next/image';
+import { useState } from 'react';
+
 import housesDatabase from '../util/database';
 import Link from 'next/link';
 import { css } from '@emotion/react';

@@ -5,51 +5,14 @@ import housesDatabase from '../../util/database';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { getParsedCookie, setParsedCookie } from '../../util/cookies';
+import Link from 'next/link';
+import Products from '../products';
+import { addProduct } from '../../util/cookies.js';
 
 export default function SingleHouse(props) {
-  const [addedArray, setAddedArray] = useState(props.addedHouse);
-  const currentHouseObject = addedArray.find(
-    (cookieObject) => cookieObject.id === props.house.id,
-  );
-  const [cartList, setCartList] = useState(props.cart);
+  const [cartList, setCartList] = useState(props.addedHouse);
 
-  function numberCountUp() {
-    console.log('add one more');
-    // get the current cookie value
-    const cookieValue = getParsedCookie('addedHouse') || [];
-    // update the value + 1
-    const newCookie = cookieValue.map((cookieObject) => {
-      if (cookieObject.id === props.house.id) {
-        return { ...cookieObject, numbers: cookieObject.number + 1 };
-      } else {
-        return cookieObject;
-      }
-    });
-    // update cookie and state
-    setAddedArray(newCookie);
-    setParsedCookie('addedHouse', newCookie);
-  }
-
-  function numberCountDown() {
-    // get the current cookie value
-    const cookieValue = getParsedCookie('addedHouse') || [];
-    // update the value + 1
-    const newCookie = cookieValue.map((cookieObject) => {
-      if (cookieObject.id === props.house.id) {
-        if (cookieObject.number === 1) {
-          return cookieObject;
-        }
-        return { ...cookieObject, numbers: cookieObject.number - 1 };
-      } else {
-        return cookieObject;
-      }
-    });
-    // update cookie and state
-    setAddedArray(newCookie);
-    setParsedCookie('addedHouse', newCookie);
-  }
-
-  function toggleHouseAdd(id) {
+  function toggleHouseCart(id) {
     console.log(`set the cookie to toggle the id ${id}`);
     // 1 get the value of the cookie
     const cookieValue = getParsedCookie('addedHouse') || '[]';
@@ -62,24 +25,60 @@ export default function SingleHouse(props) {
     let newCookie;
     if (existIdOnArray) {
       // when id is in the array => delete item
-      newCookie = cookieValue.filter((cookieObject) => {
-        return cookieObject.id !== id;
-      });
+      newCookie = cookieValue.filter((cookieObject) => cookieObject.id !== id);
     } else {
       // whennid is not in the array => add item
-      newCookie = [...cookieValue, { id: id, number: 1 }];
+      newCookie = [...cookieValue, { id: id, items: 1 }];
     }
     // 3 set the new value of the cookie
-    setAddedArray(newCookie);
-    // setCartList(newCookie);
+    console.log(newCookie);
+
+    setCartList(newCookie);
+    setParsedCookie('addedHouse', newCookie);
+  }
+  const houseIsAdded = cartList.some((AddedObject) => {
+    return AddedObject.id === props.house.id;
+  });
+
+  const currentHouseObject = cartList.find(
+    (cookieObject) => cookieObject.id === props.house.id,
+  );
+
+  function addProduct() {
+    console.log('add one more');
+    // get the current cookie value
+    const cookieValue = getParsedCookie('addedHouse') || [];
+    // update the value + 1
+    const newCookie = cookieValue.map((cookieObject) => {
+      if (cookieObject.id === props.house.id) {
+        return { ...cookieObject, items: cookieObject.items + 1 };
+      } else {
+        return cookieObject;
+      }
+    });
+    // update cookie and state
+    setCartList(newCookie);
     setParsedCookie('addedHouse', newCookie);
   }
 
-  // const [addedHouse, setaddedHouse] = useState(props.house);
-  const addedHouse = [{ id: '1' }, { id: '2' }];
-  const houseIsAdded = addedArray.some((AddedObject) => {
-    return AddedObject.id === props.house.id;
-  });
+  function removeProduct() {
+    // get the current cookie value
+    const cookieValue = getParsedCookie('addedHouse') || [];
+    // update the value - 1
+    const newCookie = cookieValue.map((cookieObject) => {
+      if (cookieObject.id === props.house.id) {
+        if (cookieObject.amount === 1) {
+          return cookieObject;
+        }
+        return { ...cookieObject, items: cookieObject.items - 1 };
+      } else {
+        return cookieObject;
+      }
+    });
+    // update cookie and state
+    setCartList(newCookie);
+    setParsedCookie('addedHouse', newCookie);
+  }
 
   return (
     <Layout>
@@ -87,7 +86,9 @@ export default function SingleHouse(props) {
         <title>Products</title>
         <meta description="A list of products" />
       </Head>
-      <button>Back to the products</button>
+      <Link href="/products">
+        <a> Back to the houses</a>
+      </Link>
       <h1>Description</h1>
       <h1>{props.house.name}</h1>
       <img
@@ -97,25 +98,35 @@ export default function SingleHouse(props) {
         width="1200px"
       />
       <div>{props.house.type}</div>
-      <div>Price : ${props.house.price}</div>
+      <div data-test-id="product-price">Price : ${props.house.price}</div>
       <p>vdsvds</p>
+      <div>
+        <p>vdsvdsgfd</p>
 
-      <button onClick={() => numberCountUp()}>
-        Add one more
-        {currentHouseObject ? currentHouseObject.number : '1'}
-      </button>
-      <button onClick={() => numberCountDown()}>
-        - {currentHouseObject ? currentHouseObject.number : '1'}
-      </button>
-      <button onClick={() => toggleHouseAdd(props.house.id)}>
-        {houseIsAdded ? 'yes is added' : 'no not added'}
-      </button>
+        <button onClick={() => toggleHouseCart(props.house.id)}>
+          {houseIsAdded
+            ? ' - is added - Remove from Cart'
+            : ' - not added - Buy it !'}
+        </button>
+        {currentHouseObject && (
+          <div>
+            <button onClick={() => addProduct(props.house.id)}>
+              Buy one more
+            </button>
+            {currentHouseObject.items}
+            <button onClick={() => removeProduct()}>too many?</button>
+          </div>
+        )}
+      </div>
+
       {/* <div>{props.description}</div> */}
     </Layout>
   );
 }
 
 export function getServerSideProps(context) {
+  // const cartOnCookies = context.req.cookies.addedHouse || '[]';
+  // const housesInCart = JSON.parse(cartOnCookies);
   const houseId = context.query.houseId;
   console.log('db', housesDatabase);
 
@@ -124,11 +135,12 @@ export function getServerSideProps(context) {
   });
 
   const addedHouseOncookies = context.req.cookies.addedHouse || [];
-  console.log(addedHouseOncookies);
+  const addedHouse = JSON.parse(addedHouseOncookies);
+  // console.log(addedHouseOncookies);
 
   return {
     props: {
-      addedHouse: [{ id: 1 }, { id: 2 }],
+      addedHouse,
       house: matchingHouse,
     },
   };
