@@ -89,27 +89,31 @@ export default function SingleHouse(props) {
       <Link href="/products">
         <a> Back to the houses</a>
       </Link>
-      <h1>Description</h1>
+
       <h1>{props.house.name}</h1>
       <img
+        data-test-id="product-image"
         src={props.house.image}
         alt="the house"
         height="700px"
         width="1200px"
       />
       <div>{props.house.type}</div>
-      <div data-test-id="product-price">Price : ${props.house.price}</div>
-      <p>vdsvds</p>
-      <div>
-        <p>vdsvdsgfd</p>
+      <div data-test-id="product-price">Price : {props.house.price}</div>
 
-        <button onClick={() => toggleHouseCart(props.house.id)}>
+      <div>
+        <div>{props.house.description}</div>
+
+        <button
+          data-test-id="product-add-to-cart"
+          onClick={() => toggleHouseCart(props.house.id)}
+        >
           {houseIsAdded
             ? ' - is added - Remove from Cart'
             : ' - not added - Buy it !'}
         </button>
         {currentHouseObject && (
-          <div>
+          <div data-test-id="product-quantity">
             <button onClick={() => addProduct(props.house.id)}>
               Buy one more
             </button>
@@ -119,7 +123,7 @@ export default function SingleHouse(props) {
         )}
       </div>
 
-      {/* <div>{props.description}</div> */}
+      <div>{props.description}</div>
     </Layout>
   );
 }

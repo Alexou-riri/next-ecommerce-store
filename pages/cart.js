@@ -59,7 +59,7 @@ export default function Cart(props) {
           {newCookie.map((singleProduct) => {
             const subTotal = singleProduct.price * singleProduct.items;
             return (
-              <div key="">
+              <div key="" data-test-id="cart-product-<product id>">
                 <div>name:{singleProduct.name}</div>
                 <div>price: {singleProduct.price} </div>
                 <div>quantity:{singleProduct.items}</div>
@@ -76,11 +76,11 @@ export default function Cart(props) {
               </div>
             );
           })}
-          ;<div>Total Price: {totalPrice}</div>
+          ;<div data-test-id="cart-total">Total Price: {totalPrice}</div>
         </div>
 
         <p>shipping</p>
-        <Link href="/checkout">
+        <Link href="/checkout" data-test-id="cart-checkout">
           <a> Checkout</a>
         </Link>
       </div>

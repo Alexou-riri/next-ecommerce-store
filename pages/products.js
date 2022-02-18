@@ -105,8 +105,10 @@ export default function Products(props) {
         });
         return (
           <div key={`house-${house.id}`} css={wrap}>
-            <Link data-test-id="product" href={`/Houses/${house.id}`}>
-              <a css={houseName}>{house.name}</a>
+            <Link href={`/Houses/${house.id}`}>
+              <a data-test-id={`product-${house.id}`} css={houseName}>
+                {house.name}
+              </a>
             </Link>{' '}
             <img
               src={house.image}
