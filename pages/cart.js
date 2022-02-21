@@ -125,14 +125,14 @@ export default function Cart(props) {
                 <div>quantity: {singleProduct.items}</div>
                 <div>Subtotal: {subTotal}</div>
 
-                {/* <button
-                  id={singleProduct.id}
-                  onClick={(e) => {
-                    setProductCart(deleteProduct(product.id));
+                <button
+                  data-test-id="cart-product-remove-<product id>"
+                  onClick={() => {
+                    removeProductFromCart(singleProduct.id);
                   }}
                 >
                   one less?
-                </button> */}
+                </button>
               </div>
             );
           })}
