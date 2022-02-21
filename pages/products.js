@@ -15,6 +15,13 @@ const grid = css`
   padding-bottom: 20px;
   padding-top: 20px;
 `;
+
+const titre = css`
+  padding-left: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+`;
+
 const houseName = css`
   font-size: 80px;
   cursor: pointer;
@@ -30,6 +37,7 @@ const wrap = css`
   flex-flow: column wrap; */
   border: 1px solid black;
   margin-top: 30px;
+  margin-bottom: 30px;
   border-radius: 20px;
   margin-left: 200px;
   margin-right: 200px;
@@ -98,7 +106,7 @@ export default function Products(props) {
           <meta name="theme-color" content="#ffffff" />
         </Head>
       </div>
-      <h1>Choose wisely</h1>
+      <h1 css={titre}>Choose wisely</h1>
       {props.houses.map((house) => {
         const houseIsAdded = cartList.some((addedObject) => {
           return addedObject.id === house.id;

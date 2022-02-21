@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getParsedCookie, setParsedCookie } from '../util/cookies.js';
 import { getProductCart } from '../util/cookies';
+import { GetServerSidePropsContext } from 'next';
 // import logoipsum from ' ./public/Images/logoipsum.svg';
 
 const headerStyles = css`
@@ -21,10 +22,11 @@ const headerStyles = css`
     transition: transform 0.2s ease-out;
   }
   a {
-    color: #fff;
+    color: #320202;
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: 0.15em;
+    /* text-shadow: 1px 1px 1px black; */
 
     display: inline-block;
     padding: 15px 20px;
@@ -57,7 +59,7 @@ const headerStyles = css`
 // const { cart } = useState;
 
 export default function Header() {
-  const cookieValue = getParsedCookie('cart') || [];
+  const cookieValue = getParsedCookie('addedHouse') || [];
   console.log('CookieValue', cookieValue);
   const totalQuantity = cookieValue.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.items;
@@ -94,7 +96,7 @@ export default function Header() {
         {/* menu deroulant? */}
         <Link href="/cart">
           {/* {cart.cartItems.length > 0 ? } */}
-          <a>Cart - {totalQuantity}</a>
+          <a>Cart - {isNaN(totalQuantity) ? '0' : totalQuantity}</a>
         </Link>
       </p>
     </header>
@@ -102,12 +104,12 @@ export default function Header() {
 }
 
 export function getServerSideProps(context) {
-  const cartOnCookies = context.req.cookies.cart || '[]';
-  const cart = JSON.parse(cartOnCookies);
+  const addedHouseOncookies = context.req.cookies.addedHouse || '[]';
+  const addedHouse = JSON.parse(addedHouseOncookies);
 
   return {
     props: {
-      addedHouse: cart,
+      addedHouse: addedHouse,
     },
   };
 }

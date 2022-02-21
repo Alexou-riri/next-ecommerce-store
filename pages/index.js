@@ -23,7 +23,8 @@ const meetOurTeam = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 80px;
+  margin-bottom: 80px;
 `;
 
 const choose = css`
@@ -31,10 +32,10 @@ const choose = css`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 220px;
+  margin-top: 180px;
   // vertical align?
-  text-shadow: 2px 2px 3px black;
-  font-size: 22px;
+  text-shadow: 3px 3px 3px black;
+  font-size: 30px;
   color: white;
 `;
 
