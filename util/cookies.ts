@@ -1,11 +1,33 @@
 import Cookies from 'js-cookie';
 
-export function getParsedCookie(key) {
+export function getParsedCookie(key: string) {
+  const cookieValue = Cookies.get(key);
+
+  if (!cookieValue) {
+    return undefined;
+  }
+
   try {
-    return JSON.parse(Cookies.get(key));
+    return JSON.parse(cookieValue);
   } catch (err) {
     return undefined;
   }
+}
+
+type AddedHouse = { id: string; items: number };
+
+type AddedHouses = AddedHouse[];
+
+export function setParsedCookie(key: string, value: AddedHouses) {
+  Cookies.set(key, JSON.stringify(value));
+}
+
+const newCookie = [{ id: 'a', items: 1 }];
+
+setParsedCookie('addedHouse', newCookie);
+
+export function deleteCookie(key: string) {
+  Cookies.remove(key);
 }
 
 // export function getProductCart() {
@@ -70,14 +92,6 @@ export function getParsedCookie(key) {
 //   }
 //   return newCart;
 // }
-
-export function setParsedCookie(key, value) {
-  Cookies.set(key, JSON.stringify(value));
-}
-
-export function deleteCookie(key) {
-  Cookies.remove(key);
-}
 
 // export function stringifyCookieValue(value) {
 //   return JSON.stringify(value);
