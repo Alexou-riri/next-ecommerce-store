@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { getHouses } from '../util/database';
-import { getParsedCookie, setParsedCookie } from '../util/cookies.js';
+import { getParsedCookie, setParsedCookie } from '../util/cookies';
 import { css } from '@emotion/react';
 
 const cart = css`
@@ -67,10 +67,10 @@ const single = css`
 `;
 
 export default function Cart(props) {
-  const [cartList, setCartList] = useState(props.addedHouse);
-  const cookieValue = getParsedCookie('addedHouse') || [];
+  const [cartList, setCartList] = useState(props.cart);
+  const cookieValue = getParsedCookie('cart') || [];
   const newCookie = cookieValue.map((cookieObject) => {
-    function findHouse() {
+    function findHouses() {
       for (const singleHouse of props.houses) {
         if (singleHouse.id === cookieObject.id) {
           return {
@@ -81,22 +81,22 @@ export default function Cart(props) {
         }
       }
     }
-    return findHouse();
+    return findHouses();
   });
-  setParsedCookie('addedHouse', newCookie);
+  setParsedCookie('cart', newCookie);
 
   const totalPrice = newCookie.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.price * currentValue.items;
   }, 0);
 
   function removeProductFromCart(id) {
-    const cartValue = getParsedCookie('addedHouse') || [];
+    const cartValue = getParsedCookie('cart') || [];
 
     const updatedCookie = cartValue.filter(
       (cookieObject) => cookieObject.id !== id,
     );
 
-    setParsedCookie('addedHouse', updatedCookie);
+    setParsedCookie('cart', updatedCookie);
     setCartList(updatedCookie);
   }
 
@@ -148,14 +148,14 @@ export default function Cart(props) {
   );
 }
 export async function getServerSideProps(context) {
-  const addedHouseOncookies = context.req.cookies.addedHouse || '[]';
-  const addedHouse = JSON.parse(addedHouseOncookies);
+  const addedHouseOncookies = context.req.cookies.cart || '[]';
+  const cart = JSON.parse(addedHouseOncookies);
 
   const houses = await getHouses();
 
   return {
     props: {
-      addedHouse,
+      cart,
       houses,
     },
   };

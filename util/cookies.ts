@@ -14,7 +14,10 @@ export function getParsedCookie(key: string) {
   }
 }
 
-type AddedHouse = { id: string; items: number };
+type AddedHouse = {
+  id: string;
+  items: number;
+};
 
 type AddedHouses = AddedHouse[];
 
@@ -22,9 +25,9 @@ export function setParsedCookie(key: string, value: AddedHouses) {
   Cookies.set(key, JSON.stringify(value));
 }
 
-const newCookie = [{ id: 'a', items: 1 }];
+const newCookie = [{ id: '', items: 0 }];
 
-setParsedCookie('addedHouse', newCookie);
+// setParsedCookie('addedHouse', newCookie);
 
 export function deleteCookie(key: string) {
   Cookies.remove(key);

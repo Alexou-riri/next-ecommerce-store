@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { getParsedCookie, setParsedCookie } from '../util/cookies.js';
-import { getProductCart } from '../util/cookies';
-import { GetServerSidePropsContext } from 'next';
+// import { useEffect, useState } from 'react';
+// import Image from 'next/image';
+import { getParsedCookie } from '../util/cookies';
+
 // import logoipsum from ' ./public/Images/logoipsum.svg';
 
 const headerStyles = css`
@@ -59,7 +58,7 @@ const headerStyles = css`
 // const { cart } = useState;
 
 export default function Header() {
-  const cookieValue = getParsedCookie('addedHouse') || [];
+  const cookieValue = getParsedCookie('cart') || [];
   console.log('CookieValue', cookieValue);
   const totalQuantity = cookieValue.reduce((previousValue, currentValue) => {
     return previousValue + currentValue.items;
@@ -104,12 +103,12 @@ export default function Header() {
 }
 
 export function getServerSideProps(context) {
-  const addedHouseOncookies = context.req.cookies.addedHouse || '[]';
-  const addedHouse = JSON.parse(addedHouseOncookies);
+  const addedHouseOncookies = context.req.cookies.cart || '[]';
+  const cart = JSON.parse(addedHouseOncookies);
 
   return {
     props: {
-      addedHouse: addedHouse,
+      addedHouse: cart,
     },
   };
 }

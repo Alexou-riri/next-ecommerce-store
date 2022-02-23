@@ -1,13 +1,12 @@
 import Head from 'next/head';
-import Image from 'next/image';
+
 import Layout from '../../components/Layout';
 import { getHouseById } from '../../util/database';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { getParsedCookie, setParsedCookie } from '../../util/cookies';
 import Link from 'next/link';
-import Products from '../products';
-import { addProduct } from '../../util/cookies.js';
+
 import { css } from '@emotion/react';
 
 const back = css`
@@ -110,12 +109,12 @@ const qtte = css`
 `;
 
 export default function SingleHouse(props) {
-  const [cartList, setCartList] = useState(props.addedHouse);
+  const [cartList, setCartList] = useState(props.cart);
 
   function toggleHouseCart(id) {
     console.log(`set the cookie to toggle the id ${id}`);
     // 1 get the value of the cookie
-    const cookieValue = getParsedCookie('addedHouse') || '[]';
+    const cookieValue = getParsedCookie('cart') || [];
     console.log(cookieValue);
     // 2 update the cookie
     const existIdOnArray = cookieValue.some((cookieObject) => {
@@ -134,7 +133,7 @@ export default function SingleHouse(props) {
     console.log(newCookie);
 
     setCartList(newCookie);
-    setParsedCookie('addedHouse', newCookie);
+    setParsedCookie('cart', newCookie);
   }
   const houseIsAdded = cartList.some((AddedObject) => {
     return AddedObject.id === props.house.id;
@@ -147,7 +146,7 @@ export default function SingleHouse(props) {
   function addProduct() {
     console.log('add one more');
     // get the current cookie value
-    const cookieValue = getParsedCookie('addedHouse') || [];
+    const cookieValue = getParsedCookie('cart') || [];
     // update the value + 1
     const newCookie = cookieValue.map((cookieObject) => {
       if (cookieObject.id === props.house.id) {
@@ -158,12 +157,12 @@ export default function SingleHouse(props) {
     });
     // update cookie and state
     setCartList(newCookie);
-    setParsedCookie('addedHouse', newCookie);
+    setParsedCookie('cart', newCookie);
   }
 
   function removeProduct() {
     // get the current cookie value
-    const cookieValue = getParsedCookie('addedHouse') || [];
+    const cookieValue = getParsedCookie('cart') || [];
     // update the value - 1
     const newCookie = cookieValue.map((cookieObject) => {
       if (cookieObject.id === props.house.id) {
@@ -177,7 +176,7 @@ export default function SingleHouse(props) {
     });
     // update cookie and state
     setCartList(newCookie);
-    setParsedCookie('addedHouse', newCookie);
+    setParsedCookie('cart', newCookie);
   }
 
   return (
@@ -242,15 +241,15 @@ export async function getServerSideProps(context) {
   //   return house.id === houseId;
   // });
 
-  const addedHouseOncookies = context.req.cookies.addedHouse || '[]';
-  const addedHouse = JSON.parse(addedHouseOncookies);
+  const addedHouseOncookies = context.req.cookies.cart || '[]';
+  const cart = JSON.parse(addedHouseOncookies);
   // console.log(addedHouseOncookies);
 
   const house = await getHouseById(houseId);
 
   return {
     props: {
-      addedHouse,
+      cart,
       // house: matchingHouse,
       house: house,
     },

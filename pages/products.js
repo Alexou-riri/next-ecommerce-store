@@ -75,10 +75,10 @@ const wrap = css`
 `;
 
 export default function Products(props) {
-  const [cartList, setCartList] = useState(props.addedHouse);
+  const [cartList, setCartList] = useState(props.cart);
 
   function toggleHouseCart(id) {
-    const cookieValue = getParsedCookie('addedHouse') || [];
+    const cookieValue = getParsedCookie('cart') || [];
     const existIdOnArray = cookieValue.some((cookieObject) => {
       return cookieObject.id === id;
     });
@@ -91,7 +91,7 @@ export default function Products(props) {
     }
 
     setCartList(newCookie);
-    setParsedCookie('addedHouse', newCookie);
+    setParsedCookie('cart', newCookie);
   }
   return (
     <Layout>
@@ -104,6 +104,7 @@ export default function Products(props) {
           <link rel="manifest" href="/manifest.json" />
           <meta name="msapplication-TileColor" content="#da532c" />
           <meta name="theme-color" content="#ffffff" />
+          <meta name="List of products" content="a list of products" />
         </Head>
       </div>
       <h1 css={titre}>Choose wisely</h1>
@@ -125,44 +126,19 @@ export default function Products(props) {
               width="700px"
               css={grid}
             />
-            {/* <button onClick={() => toggleHouseCart(house.id)}>
-               {houseIsAdded ? 'Remove from cart' : 'Add to cart'}
-             </button> */}
+            <button onClick={() => toggleHouseCart(house.id)}>
+              {houseIsAdded ? 'Remove from cart' : 'Add to cart'}
+            </button>
           </div>
         );
       })}
-
-      {/* <div>
-        <h1>Chambord</h1>
-        <Image src={Chambord} />
-      </div>
-      <div>
-        <h1>Chenonceau</h1>
-        <Image src={Chenonceau} />
-      </div>
-      <div>
-        <h1>Dosney</h1>
-        <Image src={Disney} />
-      </div>
-      <div>
-        <h1>Kings Landing</h1>
-        <Image src={KingsLanding} />
-      </div>
-      <div>
-        <h1>Schönbrunn</h1>
-        <Image src={Schoenbrunn} />
-      </div>
-      <div>
-        <h1>Neuschwanstein</h1>
-        <Image src={Neuschwanstein} />
-      </div> */}
     </Layout>
   );
 }
 
 export async function getServerSideProps(context) {
-  const addedHouseOncookies = context.req.cookies.addedHouse || '[]';
-  const addedHouse = JSON.parse(addedHouseOncookies);
+  const addedHouseOncookies = context.req.cookies.cart || '[]';
+  const cart = JSON.parse(addedHouseOncookies);
 
   const houses = await getHouses();
 
@@ -170,7 +146,7 @@ export async function getServerSideProps(context) {
     props: {
       // houses: housesDatabase,
       houses: houses,
-      addedHouse,
+      cart,
     },
   };
 }

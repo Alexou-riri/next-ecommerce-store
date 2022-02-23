@@ -14,7 +14,13 @@ export default function Layout(props) {
     <div>
       <Head>
         <link rel="icon" href="/favicon.ico" />
-        <title></title>
+        <title />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <Header />
       <main css={pageContainer}>{props.children}</main>

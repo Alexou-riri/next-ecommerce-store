@@ -1,5 +1,4 @@
-// import Link from 'next/link';
-import Header from '../components/Header';
+// import Link from 'next/link'
 import { css } from '@emotion/react';
 
 const footer = css`

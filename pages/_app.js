@@ -1,6 +1,7 @@
 // import '../styles/globals.css';
 import Head from 'next/head';
 import { css, Global } from '@emotion/react';
+import { Html, Main, NextScript } from 'next/app';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -25,12 +26,6 @@ function MyApp({ Component, pageProps }) {
           href="./favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500&display=swap"
-          rel="stylesheet"
-        />
       </Head>
       <Global
         styles={css`
