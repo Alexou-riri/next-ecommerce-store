@@ -14,14 +14,16 @@ export function getParsedCookie(key: string) {
   }
 }
 
-type AddedHouse = {
+export type House = {
   id: string;
   items: number;
+  name: string;
+  image: string;
 };
 
-type AddedHouses = AddedHouse[];
+export type Cart = House[];
 
-export function setParsedCookie(key: string, value: AddedHouses) {
+export function setParsedCookie(key: string, value: Cart) {
   Cookies.set(key, JSON.stringify(value));
 }
 

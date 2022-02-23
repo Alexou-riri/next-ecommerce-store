@@ -1,7 +1,7 @@
 // import '../styles/globals.css';
 import Head from 'next/head';
+
 import { css, Global } from '@emotion/react';
-import { Html, Main, NextScript } from 'next/app';
 
 function MyApp({ Component, pageProps }) {
   return (

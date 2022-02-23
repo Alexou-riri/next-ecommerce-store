@@ -35,28 +35,22 @@ export default function checkout() {
         <div>
           <label for="creditCard">
             Card Number
-            <input type="text" name="creditCard" id="creditCard" required />
+            <input name="creditCard" id="creditCard" required />
           </label>
         </div>
         <div>
           <label for="cvv">
             Security Code
-            <input type="text" name="cvv" id="cvv" required />
+            <input name="cvv" id="cvv" required />
           </label>
         </div>
         <div>
           <label for="Expiration">
             Exp. (MM/YYYY)
-            <input
-              type="text"
-              name="exp-month"
-              id="exp-month"
-              size="2"
-              required
-            />
+            <input name="exp-month" id="exp-month" size="2" required />
           </label>
           <span> / </span>
-          <input type="text" name="exp-year" id="exp-year" size="4" required />
+          <input name="exp-year" id="exp-year" size="4" required />
         </div>
         <button>
           <Link href="/thank_you">confirm your order and get your keys</Link>{' '}

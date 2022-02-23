@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { getHouses } from '../util/database';
 import Link from 'next/link';
 import { css } from '@emotion/react';
-import { getParsedCookie, setParsedCookie } from '../util/cookies';
+import { getParsedCookie, setParsedCookie, Cart, House } from '../util/cookies';
+import { GetServerSidePropsContext } from 'next';
 // import { wrap } from 'module';
 
 const grid = css`
@@ -74,18 +75,25 @@ const wrap = css`
   /* display: flex; */
 `;
 
-export default function Products(props) {
+type Props = {
+  houses: House[];
+  cart: Cart;
+};
+
+export default function Products(props: Props) {
   const [cartList, setCartList] = useState(props.cart);
 
-  function toggleHouseCart(id) {
+  function toggleHouseCart(id: string) {
     const cookieValue = getParsedCookie('cart') || [];
-    const existIdOnArray = cookieValue.some((cookieObject) => {
+    const existIdOnArray = cookieValue.some((cookieObject: House) => {
       return cookieObject.id === id;
     });
 
     let newCookie;
     if (existIdOnArray) {
-      newCookie = cookieValue.filter((cookieObject) => cookieObject.id !== id);
+      newCookie = cookieValue.filter(
+        (cookieObject: House) => cookieObject.id !== id,
+      );
     } else {
       newCookie = [...cookieValue, { id: id, items: 1 }];
     }
@@ -136,7 +144,7 @@ export default function Products(props) {
   );
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const addedHouseOncookies = context.req.cookies.cart || '[]';
   const cart = JSON.parse(addedHouseOncookies);
 
