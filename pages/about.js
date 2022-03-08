@@ -28,6 +28,7 @@ export default function About() {
           <meta name="theme-color" content="#ffffff" />
         </Head>
         <Header />
+
         <h1 css={titre}>About this eshop</h1>
         <div css={text}>
           <p>
@@ -57,6 +58,13 @@ export default function About() {
             sartorial dolore gastropub venmo locavore vexillologist.
           </p>
         </div>
+
+        <img
+          src="/interieur.jpg"
+          height={1000}
+          width={1000}
+          alt="interior of a house"
+        />
       </div>
       <div>
         <Footer />
