@@ -1,18 +1,32 @@
 import postgres from 'postgres';
 import { config } from 'dotenv-safe';
+import setPostgresDefaultsOnHeroku from './setPostgresDefaultsOnHeroku.js';
+
+setPostgresDefaultsOnHeroku();
 
 // loads all environement variables from a .env file
 // for all  code after this line
 config();
 
+declare module globalThis {
+  let postgresSqlClient: ReturnType<typeof postgres> | undefined;
+}
+
 // Connect only once to the database
 // https://github.com/vercel/next.js/issues/7811#issuecomment-715259370
 function connectOneTimeToDatabase() {
+  let sql;
   // connect only once to the databse
-  if (!globalThis.postgresSqlClient) {
-    globalThis.postgresSqlClient = postgres();
+  if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
+    // sql = postgres();
+    sql = postgres({ ssl: { rejectUnauthorized: false } });
+  } else {
+    // connect only once to the databse
+    if (!globalThis.postgresSqlClient) {
+      globalThis.postgresSqlClient = postgres();
+    }
+    sql = globalThis.postgresSqlClient;
   }
-  const sql = globalThis.postgresSqlClient;
 
   return sql;
 }
