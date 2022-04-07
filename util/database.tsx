@@ -34,6 +34,15 @@ function connectOneTimeToDatabase() {
 // Connect to PostgreSQL
 const sql = connectOneTimeToDatabase();
 
+export type House = {
+  id: number;
+  name: string;
+  type: string;
+  image: string;
+  price: number;
+  description: string;
+};
+
 export async function getHouses() {
   const houses = await sql`
   SELECT * FROM houses;
@@ -41,7 +50,7 @@ export async function getHouses() {
   return houses;
 }
 
-export async function getHouseById(id) {
+export async function getHouseById(id: number) {
   const [house] = await sql`
   SELECT * FROM houses WHERE id =${id};
   `;
