@@ -10,10 +10,6 @@ const footer = css`
   bottom: 0;
   width: 100%;
 
-  /* right: 0;
-  bottom: 0;
-  left: 0; */
-
   .contact {
     display: flex;
     flex-direction: column;
@@ -22,11 +18,6 @@ const footer = css`
     /* padding-right: 50px; */
     padding-bottom: 10px;
   }
-  /* .tel {
-    display: flex;
-    justify-content: flex-end;
-    flex-direction: column;
-  } */
 `;
 
 export default function Footer() {

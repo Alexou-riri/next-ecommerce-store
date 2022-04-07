@@ -21,11 +21,8 @@ const back = css`
     text-decoration: none;
     letter-spacing: 0.1em;
 
-    //display: inline-block;
     padding: 15px 20px;
     position: relative;
-    /* border: 1px solid black;
-    border-radius: 10px; */
   }
   a:after {
     background: none repeat scroll 0 0 transparent;
